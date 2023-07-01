@@ -5,7 +5,10 @@ pipeline {
         stage('Git Checkout') {
             steps {
                 script {
-                    git branch: 'main', url: 'https://github.com/fadedstarboy/ultimate-cicd.git'
+                    gitCheckout(
+                        branch: "main",
+                        url: "https://github.com/fadedstarboy/ultimate-cicd.git"
+                    )
                 }
             }
         }
