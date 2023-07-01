@@ -58,7 +58,8 @@ pipeline {
             }
             steps {
                 script {
-                    staticcode()
+                    def creds = 'jenkins-sona'
+                    staticcode(creds)
                 }
             }
         }
