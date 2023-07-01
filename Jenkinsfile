@@ -14,4 +14,15 @@ pipeline {
             }
         }
     }
+
+    stages {
+        stage('Unit Test Maven') {
+            steps {
+                script {
+                    maventest()
+                    
+                }
+            }
+        }
+    }
 }
