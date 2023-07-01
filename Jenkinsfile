@@ -49,5 +49,18 @@ pipeline {
                 }
             }
         }
+
+        stage('Static Code Analysis Test SonarQube') {
+            when {
+                expression {
+                    params.action == 'create'
+                }
+            }
+            steps {
+                script {
+                    staticcode()
+                }
+            }
+        }
     }
 }
