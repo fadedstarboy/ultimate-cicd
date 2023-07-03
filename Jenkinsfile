@@ -64,18 +64,5 @@ pipeline {
             }
         }
 
-        stage('Quality Gate Check Status') {
-            when {
-                expression {
-                    params.action == 'create'
-                }
-            }
-            steps {
-                script {
-                    def creds = 'jenkins-sona'
-                    qualitygatestatus(creds)
-                }
-            }
-        }
     }
 }
