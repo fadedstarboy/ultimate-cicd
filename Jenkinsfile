@@ -7,7 +7,7 @@ pipeline {
         choice(name: 'action', choices: 'create\ndelete', description: 'Choose Create or Destroy')
         string(name: 'ImageName', description: "Name of docker build", defaultValue: "javapp")
         string(name: 'ImageTag', description: "Tage of docker build", defaultValue: "v1")
-        string(name: 'HubUserName', description: "name of Application", defaultValue: "fadedstarboy")
+        string(name: 'HubUserName', description: "DockerHub username", defaultValue: "fadedstarboy")
 
     }
 
