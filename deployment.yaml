@@ -1,0 +1,32 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: myjavaapp-deployment
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: myjavaapp
+  template:
+    metadata:
+      labels:
+        app: myjavaapp
+    spec:
+      containers:
+      - name: myjavaapp
+        image: https://hub.docker.com/layers/fadedstarboy/javapp/latest/images/sha256-e32861329d4d25f1f91938237382f0c3b0880a857d3e0cbbd77d718bd0c915c4?context=repo
+        ports:
+        - containerPort: 8000
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: myjavaapp-service
+spec:
+  selector:
+    app: myjavaapp
+  ports:
+  - name: http
+    port: 80
+    targetPort: 8000
+  type: LoadBalancer

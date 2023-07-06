@@ -170,7 +170,36 @@ pipeline {
                     
                 }
             }
-        } 
+        }
+
+        stage('Deployment on EKS') {
+            when {
+                expression {
+                    params.action == 'create'
+                }
+            }
+            steps {
+                script {
+                    def appply = false
+                    try{
+                        input message: 'Please confirm if you want to deploy on EKS', ok: 'Ready to apply the config?'
+                        apply = true
+                    }
+                    catch(err){
+                        apply = false
+                        currentBuild.result = 'UNSTABLE'
+                    }
+                    if(apply){
+                        sh """
+                        kubectl apply -f
+                        """
+                    }
+
+                }
+            }
+        }
+
+
 
 
         
