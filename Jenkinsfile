@@ -182,7 +182,7 @@ pipeline {
                 script {
                     def appply = false
                     try{
-                        input message: 'Please confirm if you want to deploy on EKS', ok: 'Ready to apply the config?'
+                        input message: 'Please confirm if you want to deploy on EKS', ok: 'Yes, proceed'
                         apply = true
                     }
                     catch(err){
@@ -191,7 +191,7 @@ pipeline {
                     }
                     if(apply){
                         sh """
-                        kubectl apply -f
+                        kubectl apply -f .
                         """
                     }
 
