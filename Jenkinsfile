@@ -3,13 +3,20 @@
 pipeline {
     agent any
 
-    parameters {
+    parameters{
         choice(name: 'action', choices: 'create\ndelete', description: 'Choose Create or Destroy')
         string(name: 'ImageName', description: "Name of docker build", defaultValue: "javapp")
         string(name: 'ImageTag', description: "Tage of docker build", defaultValue: "v1")
         string(name: 'HubUserName', description: "DockerHub username", defaultValue: "fadedstarboy")
+        string(name: 'Region', description: "Region of EKS", defaultValue: 'us-east-1')
 
     }
+    environment{
+        ACCESS_KEY = credentials('AWS_ACCESS_KEY')
+        SECRET_KEY = credentials('AWS_SECRET_KEY')
+
+    }
+
 
     stages {
         stage('Git Checkout') {
@@ -28,7 +35,7 @@ pipeline {
             }
         }
 
-        stage('Unit Test Maven') {
+/*         stage('Unit Test Maven') {
             when {
                 expression {
                     params.action == 'create'
@@ -107,7 +114,7 @@ pipeline {
 
                 }
             }
-        } */
+        }
 
         stage('Docker Image Push : DockerHub') {
             when {
@@ -121,7 +128,28 @@ pipeline {
 
                 }
             }
-        }
+        } */
+
+        stage('Creating EKS CLuster : Terraform') {
+            when {
+                expression {
+                    params.action == 'create'
+                }
+            }
+            steps {
+                script {
+                    dir('eks_mod'){
+                        sh """
+                        terraform init
+                        terraform plan -var 'access_key=$ACCESS_KEY' -var 'secret_key=$SECRET_KEY' -var 'region=${params.Region} --var-file=./config/terraform.tfvars
+                        terraform apply -var 'access_key=$ACCESS_KEY' -var 'secret_key=$SECRET_KEY' -var 'region=${params.Region} --var-file=./config/terraform.tfvars --auto-approve                      
+                        """
+                    }
+                    
+                }
+            }
+        }       
+        
 
     }
 }
