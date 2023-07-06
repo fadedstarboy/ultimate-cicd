@@ -9,6 +9,7 @@ pipeline {
         string(name: 'ImageTag', description: "Tage of docker build", defaultValue: "v1")
         string(name: 'HubUserName', description: "DockerHub username", defaultValue: "fadedstarboy")
         string(name: 'Region', description: "Region of EKS", defaultValue: 'us-east-1')
+        string(name: "cluster", description: "Name of eks_cluster", defaultValue: 'demo-cluster1')
 
     }
     environment{
@@ -148,7 +149,30 @@ pipeline {
                     
                 }
             }
-        }       
+        }
+
+        stage('Connect to EKS') {
+            when {
+                expression {
+                    params.action == 'create'
+                }
+            }
+            steps {
+                script {
+                    dir('eks_mod'){
+                        sh """
+                        aws configure set aws_access_key_id $ACCESS_KEY 
+                        aws configure set aws_secret_access_key $SECRET_KEY
+                        aws configure set region ${params.Region}
+                        aws eks --region ${params.Region} update kube-config --name ${params.cluster}
+                        """
+                    }
+                    
+                }
+            }
+        } 
+
+
         
 
     }
