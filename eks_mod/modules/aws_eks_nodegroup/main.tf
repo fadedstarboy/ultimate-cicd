@@ -61,7 +61,7 @@ resource "aws_iam_role" "nodes_general" {
   name = var.node_group_name
 
   # The policy that grants an entity permission to assume the role.
-  assume_role_policy = <<POLICY
+    assume_role_policy = <<POLICY
 {
   "Version": "2012-10-17",
   "Statement": [
@@ -69,12 +69,13 @@ resource "aws_iam_role" "nodes_general" {
       "Effect": "Allow",
       "Principal": {
         "Service": "ec2.amazonaws.com"
-      }, 
+      },
       "Action": "sts:AssumeRole"
     }
   ]
 }
 POLICY
+
 }
 
 resource "aws_iam_role_policy_attachment" "amazon_eks_worker_node_policy_general" {
