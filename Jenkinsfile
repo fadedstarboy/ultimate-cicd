@@ -36,7 +36,7 @@ pipeline {
             }
         }
 
-/*         stage('Unit Test Maven') {
+        stage('Unit Test Maven') {
             when {
                 expression {
                     params.action == 'create'
@@ -103,7 +103,7 @@ pipeline {
             }
         }
 
-        /* stage('Docker Image Scan Trivy') {
+        stage('Docker Image Scan Trivy') {
             when {
                 expression {
                     params.action == 'create'
@@ -129,7 +129,7 @@ pipeline {
 
                 }
             }
-        } */
+        }
 
         stage('Creating EKS CLuster : Terraform') {
             when {
@@ -198,11 +198,5 @@ pipeline {
                 }
             }
         }
-
-
-
-
-        
-
     }
 }
